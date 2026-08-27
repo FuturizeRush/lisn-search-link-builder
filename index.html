@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Lead Search Builder</title>
+  <meta name="description" content="Build and name a LinkedIn Sales Navigator people search link in your browser.">
+  <link rel="canonical" href="https://futurizerush.github.io/lisn-search-link-builder/">
+  <link rel="stylesheet" href="src/styles.css?v=9">
+</head>
+<body>
+  <nav class="skip-links" aria-label="Skip links">
+    <a class="skip-link" href="#builder-form">Skip to filters</a>
+    <a class="skip-link" href="#preview-panel">Skip to review</a>
+  </nav>
+
+  <header class="masthead">
+    <div class="brand-lockup" aria-label="Lead Search Builder">
+      <span class="brand-mark" aria-hidden="true">L/</span>
+      <span>Lead Search Builder</span>
+    </div>
+    <div class="privacy-note">
+      <span class="privacy-light" aria-hidden="true"></span>
+      Runs in this browser
+    </div>
+  </header>
+
+  <main>
+    <section class="intro" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">Sales Navigator · People search</p>
+        <h1 id="page-title">Build a lead search.</h1>
+      </div>
+      <p class="lede">Choose the filters that define the lead. Name the order. Copy the link.</p>
+    </section>
+
+    <div class="workspace-shell">
+      <form id="builder-form" class="builder-panel" novalidate tabindex="-1">
+        <div class="form-toolbar">
+          <div class="search-scope">
+            <span class="scope-dot" aria-hidden="true"></span>
+            <span>People leads</span>
+          </div>
+          <div class="toolbar-actions">
+            <a class="text-link review-jump" href="#preview-panel">Review link</a>
+            <button class="text-button" id="load-example" type="button">Reset example</button>
+            <button class="text-button subdued" id="reset-builder" type="button">Clear filters</button>
+          </div>
+        </div>
+
+        <section class="order-section" aria-labelledby="order-name-heading">
+          <div class="section-heading compact-heading">
+            <div>
+              <p class="section-kicker">Order</p>
+              <h2 id="order-name-heading">Order name</h2>
+            </div>
+            <span id="order-name-mode" class="mode-badge">Auto</span>
+          </div>
+          <div class="order-name-row">
+            <label class="order-name-field" for="order-name">
+              <span class="sr-only">Order name</span>
+              <input id="order-name" type="text" maxlength="160" autocomplete="off">
+            </label>
+            <button id="regenerate-order-name" class="secondary-button" type="button">Regenerate</button>
+            <button id="copy-order-name" class="secondary-button" type="button">Copy name</button>
+          </div>
+          <p class="field-note">Built from industry, location, language, headcount, and local date/time. Edit it if needed. It is not added to the LinkedIn URL.</p>
+        </section>
+
+        <section class="filter-section" aria-labelledby="industry-heading">
+          <div class="section-heading">
+            <div>
+              <h2 id="industry-heading">Industry</h2>
+            </div>
+            <span id="industry-selection-count" class="section-count">1 selected</span>
+          </div>
+          <div id="industry-selected" class="selected-summary" aria-live="polite"></div>
+          <details class="option-picker" id="industry-picker">
+            <summary><span>Choose industries</span><span id="industry-picker-summary">Retail</span></summary>
+            <div class="picker-body">
+              <label class="search-field" for="industry-search">
+                <span class="sr-only">Search industries</span>
+                <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m21 21-4.3-4.3m2.3-5.2a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z"/></svg>
+                <input id="industry-search" type="search" placeholder="Search retail industries" autocomplete="off">
+              </label>
+              <p id="industry-option-status" class="option-status" role="status" aria-live="polite"></p>
+              <div id="industry-options" class="option-grid option-grid--industries" role="group" aria-label="Industry options"></div>
+              <p id="industry-empty" class="empty-options" hidden>No matching industries.</p>
+              <details class="custom-entry">
+                <summary>Add a verified industry ID</summary>
+                <div class="inline-fields">
+                  <label>Industry name<input id="custom-industry-name" type="text" maxlength="80" autocomplete="off" placeholder="Software Development"></label>
+                  <label>Industry ID<input id="custom-industry-id" type="text" inputmode="numeric" pattern="[1-9][0-9]*" autocomplete="off" placeholder="4"></label>
+                  <button id="add-custom-industry" class="small-button" type="button">Add</button>
+                </div>
+                <p class="field-note">Use an ID verified in your Sales Navigator account.</p>
+                <div id="custom-industry-list" class="token-row" aria-live="polite"></div>
+              </details>
+            </div>
+          </details>
+        </section>
+
+        <section class="filter-section" aria-labelledby="region-heading">
+          <div class="section-heading">
+            <div>
+              <h2 id="region-heading">Location</h2>
+            </div>
+            <span id="region-selection-count" class="section-count">1 selected</span>
+          </div>
+          <div id="region-selected" class="selected-summary" aria-live="polite"></div>
+          <div class="preset-actions location-presets" aria-label="Location presets">
+            <button id="select-us" class="preset-button" type="button" aria-pressed="true">US nationwide</button>
+            <button id="select-us-states" class="preset-button" type="button" aria-pressed="false">50 states</button>
+            <button id="select-all-us-areas" class="preset-button" type="button" aria-pressed="false">56 areas</button>
+          </div>
+          <details class="option-picker" id="region-picker">
+            <summary><span>Choose locations</span><span id="region-picker-summary">United States</span></summary>
+            <div class="picker-body">
+              <label class="search-field" for="region-search">
+                <span class="sr-only">Search US locations</span>
+                <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m21 21-4.3-4.3m2.3-5.2a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z"/></svg>
+                <input id="region-search" type="search" placeholder="Search states or US areas" autocomplete="off">
+              </label>
+              <p id="region-option-status" class="option-status" role="status" aria-live="polite"></p>
+              <div id="region-options" class="option-grid option-grid--regions" role="group" aria-label="US location options"></div>
+              <p id="region-empty" class="empty-options" hidden>No matching locations.</p>
+            </div>
+          </details>
+        </section>
+
+        <section class="filter-section" aria-labelledby="title-heading">
+          <div class="section-heading">
+            <div>
+              <h2 id="title-heading">Title</h2>
+            </div>
+            <span id="title-selection-count" class="section-count" role="status" aria-live="polite" aria-atomic="true">13 titles</span>
+          </div>
+          <div class="preset-rack">
+            <div class="preset-rack__heading">
+              <div>
+                <h3 class="subheading">Title preset</h3>
+                <p id="title-preset-status">Owner-focused</p>
+              </div>
+              <div class="preset-actions" aria-label="Title presets">
+                <button id="select-owner-titles" class="preset-button" type="button" aria-pressed="true">Owner-focused <span>13</span></button>
+                <button id="select-all-titles" class="preset-button" type="button" aria-pressed="false">All titles <span>20</span></button>
+                <button id="clear-titles" class="preset-button preset-button--quiet" type="button">Clear</button>
+              </div>
+            </div>
+            <div id="title-summary" class="selected-summary selected-summary--plain"></div>
+            <details class="option-picker title-picker" id="title-picker">
+              <summary><span>Edit title list</span><span>20 available</span></summary>
+              <div class="picker-body">
+                <div id="title-options" class="option-grid option-grid--titles" role="group" aria-label="Current job titles"></div>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <section class="filter-section" aria-labelledby="headcount-heading">
+          <div class="section-heading compact-heading">
+            <div>
+              <h2 id="headcount-heading">Company headcount</h2>
+            </div>
+            <span id="headcount-selection-count" class="section-count">Any size</span>
+          </div>
+          <div id="headcount-options" class="pill-grid" role="group" aria-label="Company headcount"></div>
+        </section>
+
+        <section class="filter-section" aria-labelledby="language-heading">
+          <div class="section-heading compact-heading">
+            <div>
+              <h2 id="language-heading">Profile language</h2>
+            </div>
+            <span id="language-selection-count" class="section-count">Any language</span>
+          </div>
+          <div id="language-selected" class="selected-summary" aria-live="polite"></div>
+          <details class="option-picker" id="language-picker">
+            <summary><span>Choose languages</span><span id="language-picker-summary">Any language</span></summary>
+            <div class="picker-body">
+              <div id="language-options" class="pill-grid language-grid" role="group" aria-label="Profile language"></div>
+            </div>
+          </details>
+        </section>
+
+        <section class="filter-section activity-section" aria-labelledby="activity-heading">
+          <div class="section-heading compact-heading">
+            <div>
+              <h2 id="activity-heading">LinkedIn activity</h2>
+            </div>
+          </div>
+          <label class="featured-switch">
+            <span>
+              <strong>Posted on LinkedIn recently</strong>
+              <small>Only include leads with recent LinkedIn posts.</small>
+            </span>
+            <input id="posted-on-linkedin" type="checkbox" data-people-toggle="postedOnLinkedin">
+          </label>
+        </section>
+
+        <details class="advanced-suite" id="more-filters">
+          <summary>
+            <span><strong>More filters</strong><small id="advanced-filter-status">No active filters</small></span>
+            <span aria-hidden="true">+</span>
+          </summary>
+          <div class="advanced-suite__body">
+            <section class="advanced-section" aria-labelledby="seniority-heading">
+              <h2 id="seniority-heading">Seniority</h2>
+              <div id="seniority-options" class="pill-grid" role="group" aria-label="Seniority"></div>
+              <h3 class="subheading">Job function</h3>
+              <div id="function-options" class="option-grid compact-options" role="group" aria-label="Job functions"></div>
+            </section>
+
+            <section class="advanced-section" aria-labelledby="company-type-heading">
+              <h2 id="company-type-heading">Company type</h2>
+              <div id="company-type-options" class="pill-grid" role="group" aria-label="Company type"></div>
+              <h3 class="subheading">Other signals</h3>
+              <div class="switch-list">
+                <label><span>Recently changed jobs</span><input type="checkbox" data-people-toggle="changedJobs"></label>
+                <label><span>Follows your company</span><input type="checkbox" data-people-toggle="followsYourCompany"></label>
+                <label><span>Viewed your profile</span><input type="checkbox" data-people-toggle="viewedYourProfile"></label>
+                <label><span>Past colleague</span><input type="checkbox" data-people-toggle="pastColleague"></label>
+                <label><span>Shared experiences</span><input type="checkbox" data-people-toggle="sharedExperiences"></label>
+              </div>
+            </section>
+
+            <section class="advanced-section" aria-labelledby="title-logic-heading">
+              <h2 id="title-logic-heading">Advanced title logic</h2>
+              <div class="two-column-fields">
+                <div class="field-stack">
+                  <label>Additional titles or Boolean expressions<textarea id="title-include" rows="5" spellcheck="false" placeholder='President&#10;"Store Owner" OR Proprietor' aria-describedby="title-logic-note title-include-error"></textarea></label>
+                  <p id="title-include-error" class="inline-error" hidden></p>
+                </div>
+                <div class="field-stack">
+                  <label>Excluded titles<textarea id="title-exclude" rows="5" spellcheck="false" placeholder="Product Owner&#10;Account Owner" aria-describedby="title-logic-note title-exclude-error"></textarea></label>
+                  <p id="title-exclude-error" class="inline-error" hidden></p>
+                </div>
+              </div>
+              <p id="title-logic-note" class="field-note">Use one title or Boolean expression per line.</p>
+            </section>
+
+            <section class="advanced-section" aria-labelledby="people-keywords-heading">
+              <h2 id="people-keywords-heading">Keywords</h2>
+              <label class="full-field">Full-profile Boolean expression<input id="people-keywords" type="text" spellcheck="false" autocomplete="off" placeholder='"independent retailer" OR "family business"' aria-describedby="keywords-note keywords-inline-error"></label>
+              <p id="keywords-note" class="field-note">Keywords may match past roles or education.</p>
+              <p id="keywords-inline-error" class="inline-error" hidden></p>
+            </section>
+          </div>
+        </details>
+      </form>
+
+      <aside id="preview-panel" class="preview-panel" aria-labelledby="preview-title" tabindex="-1">
+        <div class="preview-sticky">
+          <div class="preview-heading">
+            <div>
+              <p class="section-kicker">Review</p>
+              <h2 id="preview-title">Lead search</h2>
+            </div>
+            <span class="mode-badge">People</span>
+          </div>
+
+          <div class="order-preview">
+            <span>Order name</span>
+            <strong id="preview-order-name"></strong>
+          </div>
+
+          <div id="error-message" class="message message--error" role="alert" hidden></div>
+          <div id="empty-message" class="message message--neutral" hidden>Choose at least one filter to build a search link.</div>
+
+          <div id="warning-list" class="warning-list" aria-live="polite"></div>
+
+          <label class="url-output url-output--visible" for="search-url">
+            <span class="url-output-heading">
+              <strong>Full search link</strong>
+              <small id="search-link-note">Complete, unshortened URL</small>
+            </span>
+            <textarea id="search-url" rows="6" readonly spellcheck="false" aria-describedby="search-link-note"></textarea>
+          </label>
+
+          <div class="primary-actions">
+            <button id="copy-link" class="copy-button" type="button" disabled>
+              <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="8" y="8" width="11" height="11" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>
+              <span>Copy search link</span>
+            </button>
+            <a id="open-link" class="open-button is-disabled" href="#" target="_blank" rel="noopener noreferrer" aria-disabled="true">
+              Open in Sales Navigator
+              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></svg>
+            </a>
+          </div>
+
+          <div class="output-meta">
+            <span id="url-length">0 characters</span>
+            <span id="filter-count">0 active filters</span>
+          </div>
+
+          <details class="logic-card">
+            <summary class="logic-card-heading">
+              <h3 id="logic-title">Active filters</h3>
+              <span>Review logic</span>
+            </summary>
+            <div id="logic-rail" class="logic-rail" aria-live="polite"></div>
+          </details>
+
+          <details class="technical-details">
+            <summary>Canonical search spec</summary>
+            <pre id="spec-output"></pre>
+          </details>
+
+          <p class="truth-note">Generated locally. Open the link in Sales Navigator to verify current filter support.</p>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <section class="partner-footer" aria-labelledby="partner-title">
+      <div class="footer-heading">
+        <h2 id="partner-title">Recommended tools</h2>
+      </div>
+      <div class="partner-grid">
+        <a class="partner-card" href="https://www.skool.com/makerschool/about?ref=5ddca9089f8f4fe7bd8f9bb2c3c8290b" target="_blank" rel="sponsored nofollow noopener noreferrer" aria-label="Visit Maker School — affiliate link">
+          <span class="partner-logo partner-logo--square"><img src="assets/partners/maker-school.svg" alt=""></span>
+          <span class="partner-name">Maker School</span>
+        </a>
+        <a class="partner-card" href="https://refer.instantly.ai/rngeup6e956h" target="_blank" rel="sponsored nofollow noopener noreferrer" aria-label="Visit Instantly — affiliate link">
+          <span class="partner-logo"><img src="assets/partners/instantly.svg" alt=""></span>
+        </a>
+        <a class="partner-card" href="https://www.vayne.io/en?fpr=rush" target="_blank" rel="sponsored nofollow noopener noreferrer" aria-label="Visit Vayne — affiliate link">
+          <span class="partner-logo"><img src="assets/partners/vayne.svg" alt=""></span>
+        </a>
+        <a class="partner-card" href="https://anymailfinder.com/?via=futurize-rush" target="_blank" rel="sponsored nofollow noopener noreferrer" aria-label="Visit Anymail Finder — affiliate link">
+          <span class="partner-logo partner-logo--icon"><img src="assets/partners/anymail-finder.svg" alt=""></span>
+          <span class="partner-name">Anymail Finder</span>
+        </a>
+        <a class="partner-card partner-card--dark" href="https://zapmail.ai/?via=rush" target="_blank" rel="sponsored nofollow noopener noreferrer" aria-label="Visit Zapmail — affiliate link">
+          <span class="partner-logo"><img src="assets/partners/zapmail.svg" alt=""></span>
+        </a>
+      </div>
+      <div class="footer-notes">
+        <p><strong>Affiliate disclosure:</strong> Some links above are referral links. We may earn a commission at no extra cost to you.</p>
+        <p><strong>Search-link note:</strong> Generated search links may be incorrect or become outdated when LinkedIn changes its filters. Verify every link in LinkedIn Sales Navigator before using it.</p>
+      </div>
+    </section>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+  <script src="src/lisn-core.js?v=5"></script>
+  <script src="src/order-name.js?v=4"></script>
+  <script src="src/app.js?v=9"></script>
+</body>
+</html>
