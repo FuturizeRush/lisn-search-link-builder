@@ -3,13 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <meta name="color-scheme" content="light">
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
   <title>Lead Search Builder</title>
   <meta name="description" content="Build and name a LinkedIn Sales Navigator people search link in your browser.">
   <link rel="canonical" href="https://futurizerush.github.io/lisn-search-link-builder/">
-  <link rel="stylesheet" href="src/styles.css?v=9">
+  <link rel="stylesheet" href="src/styles.css?v=16">
 </head>
 <body>
   <nav class="skip-links" aria-label="Skip links">
@@ -24,7 +25,7 @@
     </div>
     <div class="privacy-note">
       <span class="privacy-light" aria-hidden="true"></span>
-      Runs in this browser
+      Builder runs locally
     </div>
   </header>
 
@@ -37,6 +38,37 @@
       <p class="lede">Choose the filters that define the lead. Name the order. Copy the link.</p>
     </section>
 
+    <section class="recommended-tools" aria-labelledby="recommended-tools-title">
+      <h2 id="recommended-tools-title">Recommended tools</h2>
+      <div class="tool-list">
+        <a class="tool-link" href="https://www.skool.com/makerschool/about?ref=5ddca9089f8f4fe7bd8f9bb2c3c8290b" target="_blank" rel="sponsored nofollow noopener noreferrer" aria-label="Visit Maker School on Skool — affiliate link">
+          <span class="partner-logo partner-logo--maker"><img src="assets/partners/maker-school.svg" alt=""></span>
+          <span class="partner-name partner-name--maker">Maker School</span>
+        </a>
+        <a class="tool-link" href="https://refer.instantly.ai/rngeup6e956h" target="_blank" rel="sponsored nofollow noopener noreferrer" aria-label="Visit Instantly — affiliate link">
+          <span class="partner-logo"><img src="assets/partners/instantly.svg" alt=""></span>
+        </a>
+        <a class="tool-link tool-link--vayne" href="https://www.vayne.io/en?fpr=rush" target="_blank" rel="sponsored nofollow noopener noreferrer" aria-label="Visit Vayne — affiliate link">
+          <span class="partner-logo"><img src="assets/partners/vayne.svg?v=2" alt=""></span>
+        </a>
+        <a class="tool-link" href="https://www.make.com/en/register?pc=futurizerush" target="_blank" rel="sponsored nofollow noopener noreferrer" aria-label="Visit Make — affiliate link">
+          <span class="partner-logo partner-logo--icon"><img src="assets/partners/make.svg" alt=""></span>
+          <span class="partner-name">Make</span>
+        </a>
+        <a class="tool-link" href="https://n8n.partnerlinks.io/futurizerush" target="_blank" rel="sponsored nofollow noopener noreferrer" aria-label="Visit n8n — affiliate link">
+          <span class="partner-logo partner-logo--icon"><img src="assets/partners/n8n.svg" alt=""></span>
+          <span class="partner-name">n8n</span>
+        </a>
+        <a class="tool-link" href="https://anymailfinder.com/?via=futurize-rush" target="_blank" rel="sponsored nofollow noopener noreferrer" aria-label="Visit Anymail Finder — affiliate link">
+          <span class="partner-logo partner-logo--icon"><img src="assets/partners/anymail-finder.svg" alt=""></span>
+          <span class="partner-name">Anymail Finder</span>
+        </a>
+        <a class="tool-link tool-link--dark" href="https://zapmail.ai/?via=rush" target="_blank" rel="sponsored nofollow noopener noreferrer" aria-label="Visit Zapmail — affiliate link">
+          <span class="partner-logo"><img src="assets/partners/zapmail.svg" alt=""></span>
+        </a>
+      </div>
+    </section>
+
     <div class="workspace-shell">
       <form id="builder-form" class="builder-panel" novalidate tabindex="-1">
         <div class="form-toolbar">
@@ -46,7 +78,7 @@
           </div>
           <div class="toolbar-actions">
             <a class="text-link review-jump" href="#preview-panel">Review link</a>
-            <button class="text-button" id="load-example" type="button">Reset example</button>
+            <button class="text-button" id="load-example" type="button">Retail preset</button>
             <button class="text-button subdued" id="reset-builder" type="button">Clear filters</button>
           </div>
         </div>
@@ -84,7 +116,7 @@
               <label class="search-field" for="industry-search">
                 <span class="sr-only">Search industries</span>
                 <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m21 21-4.3-4.3m2.3-5.2a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z"/></svg>
-                <input id="industry-search" type="search" placeholder="Search retail industries" autocomplete="off">
+                <input id="industry-search" type="search" placeholder="Search all industries" autocomplete="off">
               </label>
               <p id="industry-option-status" class="option-status" role="status" aria-live="polite"></p>
               <div id="industry-options" class="option-grid option-grid--industries" role="group" aria-label="Industry options"></div>
@@ -316,39 +348,16 @@
   </main>
 
   <footer class="site-footer">
-    <section class="partner-footer" aria-labelledby="partner-title">
-      <div class="footer-heading">
-        <h2 id="partner-title">Recommended tools</h2>
-      </div>
-      <div class="partner-grid">
-        <a class="partner-card" href="https://www.skool.com/makerschool/about?ref=5ddca9089f8f4fe7bd8f9bb2c3c8290b" target="_blank" rel="sponsored nofollow noopener noreferrer" aria-label="Visit Maker School — affiliate link">
-          <span class="partner-logo partner-logo--square"><img src="assets/partners/maker-school.svg" alt=""></span>
-          <span class="partner-name">Maker School</span>
-        </a>
-        <a class="partner-card" href="https://refer.instantly.ai/rngeup6e956h" target="_blank" rel="sponsored nofollow noopener noreferrer" aria-label="Visit Instantly — affiliate link">
-          <span class="partner-logo"><img src="assets/partners/instantly.svg" alt=""></span>
-        </a>
-        <a class="partner-card" href="https://www.vayne.io/en?fpr=rush" target="_blank" rel="sponsored nofollow noopener noreferrer" aria-label="Visit Vayne — affiliate link">
-          <span class="partner-logo"><img src="assets/partners/vayne.svg" alt=""></span>
-        </a>
-        <a class="partner-card" href="https://anymailfinder.com/?via=futurize-rush" target="_blank" rel="sponsored nofollow noopener noreferrer" aria-label="Visit Anymail Finder — affiliate link">
-          <span class="partner-logo partner-logo--icon"><img src="assets/partners/anymail-finder.svg" alt=""></span>
-          <span class="partner-name">Anymail Finder</span>
-        </a>
-        <a class="partner-card partner-card--dark" href="https://zapmail.ai/?via=rush" target="_blank" rel="sponsored nofollow noopener noreferrer" aria-label="Visit Zapmail — affiliate link">
-          <span class="partner-logo"><img src="assets/partners/zapmail.svg" alt=""></span>
-        </a>
-      </div>
-      <div class="footer-notes">
-        <p><strong>Affiliate disclosure:</strong> Some links above are referral links. We may earn a commission at no extra cost to you.</p>
-        <p><strong>Search-link note:</strong> Generated search links may be incorrect or become outdated when LinkedIn changes its filters. Verify every link in LinkedIn Sales Navigator before using it.</p>
-      </div>
-    </section>
+    <div class="footer-notes">
+      <p><strong>Affiliate disclosure:</strong> Recommended-tool links and the author profile use referral URLs. We may earn a commission at no extra cost to you.</p>
+      <p><strong>Search-link note:</strong> Generated search links may be incorrect or become outdated when LinkedIn changes its filters. Verify every link in LinkedIn Sales Navigator before using it.</p>
+    </div>
+    <p class="footer-author">Built by <a href="https://apify.com/futurizerush?fpr=rush" target="_blank" rel="me sponsored nofollow noopener noreferrer">Futurize Rush · Apify profile</a></p>
   </footer>
 
   <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
-  <script src="src/lisn-core.js?v=5"></script>
-  <script src="src/order-name.js?v=4"></script>
-  <script src="src/app.js?v=9"></script>
+  <script src="src/lisn-core.js?v=6"></script>
+  <script src="src/order-name.js?v=5"></script>
+  <script src="src/app.js?v=11"></script>
 </body>
 </html>

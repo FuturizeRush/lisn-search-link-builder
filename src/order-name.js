@@ -49,7 +49,11 @@
 
   function buildOrderName(spec, createdAt) {
     const filters = spec?.filters || {};
-    const industries = included(filters.industries).map(item => item.name);
+    const industryItems = included(filters.industries);
+    const industries = [
+      ...industryItems.filter(item => item.id === "27"),
+      ...industryItems.filter(item => item.id !== "27"),
+    ].map(item => item.name);
     const regions = included(filters.regions).map(item => item.name);
     const languages = Array.isArray(filters.profileLanguages) ? filters.profileLanguages : [];
     const headcounts = included(filters.companyHeadcounts);

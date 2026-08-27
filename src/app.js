@@ -27,7 +27,7 @@
     return `${group}-${String(value).replace(/[^a-z0-9]+/gi, "-").toLowerCase()}`;
   }
 
-  function renderOptionGroup(containerId, group, items, getValue = item => item, getLabel = item => item, className = "option-item") {
+  function renderOptionGroup(containerId, group, items, getValue = item => item, getLabel = item => item, className = "option-item", getSearch = getLabel) {
     const fragment = document.createDocumentFragment();
     items.forEach(item => {
       const value = String(getValue(item));
@@ -36,7 +36,7 @@
       const input = document.createElement("input");
       const label = document.createElement("label");
       wrapper.className = className;
-      wrapper.dataset.search = labelText.toLocaleLowerCase();
+      wrapper.dataset.search = String(getSearch(item)).toLocaleLowerCase();
       input.type = "checkbox";
       input.id = optionId(group, value);
       input.value = value;
@@ -51,7 +51,15 @@
 
   function renderCatalogs() {
     renderOptionGroup("title-options", "title", catalogs.currentJobTitles);
-    renderOptionGroup("industry-options", "industry", catalogs.industries, item => item.id, item => item.name);
+    renderOptionGroup(
+      "industry-options",
+      "industry",
+      catalogs.industries,
+      item => item.id,
+      item => item.name,
+      "option-item",
+      item => `${item.name} ${item.id}`,
+    );
     renderOptionGroup("region-options", "region", catalogs.regions, item => item.code, item => item.name);
     renderOptionGroup("headcount-options", "headcount", catalogs.headcounts, undefined, undefined, "pill-item");
     renderOptionGroup("seniority-options", "seniority", catalogs.seniority, undefined, undefined, "pill-item");
@@ -435,7 +443,7 @@
     let selectedCount = extraSelected;
     items.forEach(item => {
       const input = item.querySelector("input");
-      const matches = !query || item.dataset.search.includes(query);
+      const matches = !query || (/^\d+$/.test(query) ? input.value === query : item.dataset.search.includes(query));
       const show = input.checked || matches;
       if (input.checked) selectedCount += 1;
       if (matches) matchCount += 1;
@@ -449,7 +457,9 @@
       : `No matching ${label}.`;
     const availability = query
       ? `${matchCount} match${matchCount === 1 ? "" : "es"}`
-      : `${items.length} available`;
+      : inputId === "industry-search"
+        ? `${items.length} industries`
+        : `${items.length} available`;
     setTextIfChanged(byId(statusId), `${selectedCount} selected · ${availability}`);
   }
 
