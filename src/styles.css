@@ -206,7 +206,7 @@ main {
   display: flex;
   align-items: center;
   gap: 18px;
-  min-height: 70px;
+  min-height: 80px;
   padding: 9px 10px 9px 18px;
   margin-bottom: 20px;
   overflow: hidden;
@@ -225,6 +225,20 @@ main {
   text-transform: uppercase;
 }
 
+.tools-heading {
+  flex: 0 0 auto;
+}
+
+.tool-scroll-hint {
+  display: none;
+  color: var(--blue-dark);
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
 .tool-list {
   display: flex;
   flex: 1 1 auto;
@@ -236,14 +250,16 @@ main {
 }
 
 .tool-link {
+  --tool-width: 124px;
   display: flex;
-  flex: 1 1 114px;
+  flex: 1 1 var(--tool-width);
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  min-width: 100px;
-  height: 50px;
-  padding: 7px 8px;
+  gap: 4px;
+  min-width: var(--tool-width);
+  height: 60px;
+  padding: 6px 8px;
   color: var(--ink);
   background: var(--surface-soft);
   border: 1px solid var(--line);
@@ -254,13 +270,27 @@ main {
 }
 
 .tool-link--maker {
-  flex-basis: 150px;
-  min-width: 140px;
+  --tool-width: 145px;
+}
+
+.tool-link--instantly {
+  --tool-width: 132px;
+}
+
+.tool-link--make {
+  --tool-width: 142px;
+}
+
+.tool-link--n8n {
+  --tool-width: 136px;
 }
 
 .tool-link--anymail {
-  flex-basis: 140px;
-  min-width: 134px;
+  --tool-width: 138px;
+}
+
+.tool-link--zapmail {
+  --tool-width: 160px;
 }
 
 .tool-link:hover {
@@ -269,7 +299,7 @@ main {
 }
 
 .tool-link:focus-visible {
-  outline: 3px solid rgba(21, 94, 239, 0.28);
+  outline: 3px solid var(--blue);
   outline-offset: 2px;
 }
 
@@ -282,6 +312,16 @@ main {
 .tool-link--dark:hover {
   background: #203250;
   border-color: #203250;
+}
+
+.tool-identity {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  min-width: 0;
+  height: 30px;
 }
 
 .partner-logo {
@@ -301,15 +341,15 @@ main {
 }
 
 .partner-logo--maker {
-  flex: 0 0 38px;
-  height: 38px;
+  flex: 0 0 30px;
+  height: 30px;
 }
 
 .partner-logo--maker img {
-  width: 38px;
-  height: 38px;
-  max-height: 38px;
-  border-radius: 8px;
+  width: 30px;
+  height: 30px;
+  max-height: 30px;
+  border-radius: 7px;
   object-fit: cover;
 }
 
@@ -334,6 +374,22 @@ main {
   font-weight: 750;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.tool-purpose {
+  display: block;
+  width: 100%;
+  color: var(--ink-soft);
+  font-size: 0.58rem;
+  font-weight: 620;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.tool-link--dark .tool-purpose {
+  color: rgba(255, 255, 255, 0.72);
 }
 
 .workspace-shell {
@@ -1458,14 +1514,17 @@ main {
   transform: translateY(0);
 }
 
-@media (max-width: 1180px) {
+@media (max-width: 1380px) {
   .recommended-tools {
     display: block;
     padding: 10px 0 10px 12px;
     margin-bottom: 16px;
   }
 
-  .recommended-tools h2 {
+  .tools-heading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     margin-bottom: 8px;
   }
 
@@ -1475,9 +1534,15 @@ main {
   }
 
   .tool-link {
-    flex: 0 0 114px;
-    height: 48px;
+    flex: 0 0 var(--tool-width);
+    height: 60px;
     scroll-snap-align: start;
+  }
+}
+
+@media (max-width: 1211px) {
+  .tool-scroll-hint {
+    display: inline;
   }
 }
 
