@@ -230,7 +230,7 @@ main {
 }
 
 .tool-scroll-hint {
-  display: none;
+  display: inline;
   color: var(--blue-dark);
   font-family: var(--mono);
   font-size: 0.62rem;
@@ -267,6 +267,10 @@ main {
   text-align: center;
   text-decoration: none;
   transition: border-color 140ms ease, background 140ms ease;
+}
+
+.tool-link--linkedin {
+  --tool-width: 150px;
 }
 
 .tool-link--maker {
@@ -1537,12 +1541,6 @@ main {
     flex: 0 0 var(--tool-width);
     height: 60px;
     scroll-snap-align: start;
-  }
-}
-
-@media (max-width: 1211px) {
-  .tool-scroll-hint {
-    display: inline;
   }
 }
 
