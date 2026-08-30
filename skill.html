@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>LISN Search Skill · Lead Search Builder</title>
+  <meta name="description" content="Copy an install prompt or download the complete LISN Search skill for building reviewable Sales Navigator search URLs.">
+  <link rel="canonical" href="https://futurizerush.github.io/lisn-search-link-builder/skill.html">
+  <link rel="stylesheet" href="src/styles.css?v=22">
+  <link rel="stylesheet" href="src/skill.css?v=2">
+</head>
+<body class="skill-page">
+  <nav class="skip-links" aria-label="Skip links">
+    <a class="skip-link" href="#skill-actions">Skip to actions</a>
+    <a class="skip-link" href="#skill-preview">Skip to preview</a>
+  </nav>
+
+  <header class="masthead">
+    <a class="brand-lockup" href="./" aria-label="Lead Search Builder home">
+      <span class="brand-mark" aria-hidden="true">L/</span>
+      <span>Lead Search Builder</span>
+    </a>
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a href="./">Builder</a>
+      <a href="skill.html" aria-current="page">Get the skill</a>
+    </nav>
+  </header>
+
+  <main class="skill-main">
+    <section class="skill-intro" aria-labelledby="skill-page-title">
+      <h1 id="skill-page-title">Use LISN Search in your coding agent.</h1>
+      <p>Build reviewable Sales Navigator people or account search URLs from targeting criteria.</p>
+    </section>
+
+    <div class="skill-layout">
+      <section id="skill-actions" class="skill-package" aria-labelledby="skill-package-title" tabindex="-1">
+        <div>
+          <h2 id="skill-package-title">LISN Search</h2>
+          <p class="skill-kicker">Complete package</p>
+        </div>
+
+        <div class="skill-action-row">
+          <button id="copy-install-prompt" class="skill-primary-action" type="button">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="8" y="8" width="11" height="11" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>
+            <span id="copy-install-label">Copy install prompt</span>
+          </button>
+          <a id="download-skill" class="skill-secondary-action" href="downloads/lisn-search.zip" download="lisn-search.zip">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 20h14"/></svg>
+            Download skill (.zip)
+          </a>
+        </div>
+        <p id="skill-action-status" class="skill-action-status" role="status" aria-live="polite"></p>
+
+        <p class="skill-safety-note">The bundled builder runs locally. Requires Python 3; no third-party packages, LinkedIn cookies, account data, or API keys.</p>
+
+        <ul class="package-files" aria-label="Package contents">
+          <li><span aria-hidden="true">01</span><strong>SKILL.md</strong></li>
+          <li><span aria-hidden="true">02</span><strong>Python URL builder</strong></li>
+          <li><span aria-hidden="true">03</span><strong>People and account filter contracts</strong></li>
+          <li><span aria-hidden="true">04</span><strong>URL compatibility contract</strong></li>
+        </ul>
+      </section>
+
+      <section id="skill-preview" class="skill-preview" aria-labelledby="skill-preview-title" tabindex="-1">
+        <div class="skill-preview-heading">
+          <h2 id="skill-preview-title">SKILL.md excerpt</h2>
+          <a href="skill/lisn-search/SKILL.md" target="_blank" rel="noopener">View full file</a>
+        </div>
+        <pre tabindex="0" aria-label="Scrollable SKILL.md excerpt"><code>---
+name: lisn-search
+description: Build and structurally validate LinkedIn Sales Navigator people or account search URLs from targeting criteria.
+---
+
+# LISN Search
+
+Create a precise, reviewable LinkedIn Sales Navigator search URL. Keep this task separate from scraping, exports, enrichment, and campaign execution.
+
+## Route the request
+
+- Use a people search for leads, titles, seniority, employers, profile language, relationships, or recent activity.
+- Use an account search for company size, headquarters, industry, followers, activity, hiring, or revenue.
+- If a request mixes people and company-only facets, build separate URLs.
+
+## Authorization boundary
+
+Building or validating a URL does not authorize scraping, enrichment, outreach, or access to cookies and credentials.</code></pre>
+      </section>
+    </div>
+
+    <ol class="install-steps" aria-label="Installation steps">
+      <li>
+        <span aria-hidden="true">1</span>
+        <div><strong>Download</strong><p>Copy the install prompt or download the complete package.</p></div>
+      </li>
+      <li>
+        <span aria-hidden="true">2</span>
+        <div><strong>Move the <code>lisn-search</code> folder into your skills directory</strong><p>Place it where your coding agent loads skills.</p></div>
+      </li>
+      <li>
+        <span aria-hidden="true">3</span>
+        <div><strong>Start a new session or reload your coding agent</strong><p>Reload it so the skill is discovered.</p></div>
+      </li>
+    </ol>
+  </main>
+
+  <footer class="site-footer skill-footer">
+    <p><strong>Compatibility note:</strong> Sales Navigator URL patterns can change. Verify generated filters in Sales Navigator.</p>
+  </footer>
+
+  <script src="src/skill-page.js?v=1"></script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+interface:
+  display_name: "LISN Search"
+  short_description: "Build reviewable Sales Navigator search URLs"
+  default_prompt: "Use $lisn-search to turn my targeting criteria into a structurally validated LinkedIn Sales Navigator search URL."
