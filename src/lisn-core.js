@@ -81,7 +81,7 @@
   const REVENUE_MIN = [0, 0.5, 1, 2.5, 5, 10, 20, 50, 100, 500, 1000];
   const REVENUE_MAX = [2.5, 5, 10, 20, 50, 100, 500, 1000, 1001];
 
-  // Active LinkedIn Industry Codes V2, alphabetized for the searchable UI.
+  // Bundled LinkedIn Industry Codes V2 compatibility snapshot, alphabetized for the searchable UI.
   const INDUSTRIES = [
     ["799", "Abrasives and Nonmetallic Minerals Manufacturing"],
     ["3246", "Accessible Architecture and Design"],
@@ -570,7 +570,14 @@
 
   function text(value, path) {
     if (typeof value !== "string" || !value.trim()) throw new SpecError(`${path} must be a non-empty string`);
-    return value.trim();
+    const normalized = value.trim();
+    try {
+      encodeURIComponent(normalized);
+    } catch (error) {
+      if (error instanceof URIError) throw new SpecError(`${path} contains an invalid Unicode surrogate`);
+      throw error;
+    }
+    return normalized;
   }
 
   function encodeAll(value) {

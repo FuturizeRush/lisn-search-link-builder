@@ -22,11 +22,16 @@ class SpecError(ValueError):
     """Raised when a canonical LISN spec is invalid."""
 
 
+MAX_JSON_CHARS = 1_000_000
+MAX_JSON_BYTES = MAX_JSON_CHARS * 4
+MAX_JSON_INTEGER_DIGITS = 100
+
+
 def _terminal_safe(text: str) -> str:
-    """Escape control characters before writing user-derived errors to a terminal."""
+    """Escape non-ASCII and control characters in terminal-bound error text."""
     escaped: list[str] = []
     for character in text:
-        if character.isprintable():
+        if 0x20 <= ord(character) <= 0x7E:
             escaped.append(character)
         else:
             codepoint = ord(character)
@@ -34,6 +39,17 @@ def _terminal_safe(text: str) -> str:
             marker = "u" if width == 4 else "U"
             escaped.append(f"\\{marker}{codepoint:0{width}x}")
     return "".join(escaped)
+
+
+class TerminalSafeArgumentParser(argparse.ArgumentParser):
+    """Keep attacker-controlled argv text from emitting terminal controls."""
+
+    def error(self, message: str) -> None:
+        self.print_usage(sys.stderr)
+        self.exit(
+            2,
+            f"{_terminal_safe(self.prog)}: error: {_terminal_safe(message)}\n",
+        )
 
 
 HEADCOUNTS = {
@@ -219,7 +235,10 @@ ACCOUNT_FIELDS = {
 def _value_text(value: Any, path: str) -> str:
     if not isinstance(value, str) or not value.strip():
         raise SpecError(f"{path} must be a non-empty string")
-    return value.strip()
+    normalized = value.strip()
+    if any(0xD800 <= ord(character) <= 0xDFFF for character in normalized):
+        raise SpecError(f"{path} contains an invalid Unicode surrogate")
+    return normalized
 
 
 def _inner_escape(value: str) -> str:
@@ -633,36 +652,85 @@ def build_lisn_url(spec: Any) -> dict[str, Any]:
     }
 
 
+def _parse_json_int(value: str) -> int:
+    digits = value[1:] if value.startswith("-") else value
+    if len(digits) > MAX_JSON_INTEGER_DIGITS:
+        raise SpecError(
+            f"JSON integer exceeds the {MAX_JSON_INTEGER_DIGITS}-digit input limit"
+        )
+    return int(value)
+
+
+def _reject_duplicate_keys(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in result:
+            raise SpecError(f"JSON object contains duplicate key '{key}'")
+        result[key] = value
+    return result
+
+
+def _decode_json(payload: str, location: str) -> Any:
+    if len(payload) > MAX_JSON_CHARS:
+        raise SpecError(
+            f"JSON input {location} exceeds the {MAX_JSON_CHARS}-character limit"
+        )
+    try:
+        return json.loads(
+            payload,
+            parse_int=_parse_json_int,
+            object_pairs_hook=_reject_duplicate_keys,
+        )
+    except SpecError:
+        raise
+    except (ValueError, RecursionError) as error:
+        raise SpecError(f"invalid JSON {location}: {error}") from error
+
+
 def _load_spec(source: str) -> Any:
     if source == "-":
+        binary_stdin = getattr(sys.stdin, "buffer", None)
+        if binary_stdin is None:
+            payload = sys.stdin.read(MAX_JSON_CHARS + 1)
+            return _decode_json(payload, "on stdin")
         try:
-            return json.load(sys.stdin)
-        except json.JSONDecodeError as error:
-            raise SpecError(f"invalid JSON on stdin: {error}") from error
+            raw_payload = binary_stdin.read(MAX_JSON_BYTES + 1)
+            if len(raw_payload) > MAX_JSON_BYTES:
+                raise SpecError(
+                    f"JSON input on stdin exceeds the {MAX_JSON_BYTES}-byte limit"
+                )
+            payload = raw_payload.decode("utf-8", errors="strict")
+        except UnicodeDecodeError as error:
+            raise SpecError(f"invalid UTF-8 JSON on stdin: {error}") from error
+        return _decode_json(payload, "on stdin")
     path = Path(source)
     if not path.is_file():
         raise SpecError(f"spec file not found: {path}")
     try:
         with path.open(encoding="utf-8") as handle:
-            return json.load(handle)
-    except json.JSONDecodeError as error:
-        raise SpecError(f"invalid JSON in {path}: {error}") from error
+            payload = handle.read(MAX_JSON_CHARS + 1)
+    except UnicodeError as error:
+        raise SpecError(f"invalid UTF-8 JSON in {path}: {error}") from error
+    return _decode_json(payload, f"in {path}")
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
+    program = _terminal_safe(Path(sys.argv[0]).name or "build_lisn_url.py")
+    parser = TerminalSafeArgumentParser(description=__doc__, prog=program)
     parser.add_argument("source", help="JSON spec path or '-' for stdin")
     parser.add_argument("--json", action="store_true", dest="as_json", help="print URL, decoded query, and warnings as JSON")
     args = parser.parse_args(argv)
     try:
         result = build_lisn_url(_load_spec(args.source))
-    except (SpecError, OSError) as error:
+        output = (
+            json.dumps(result, ensure_ascii=True, indent=2)
+            if args.as_json
+            else result["url"]
+        )
+        print(output)
+    except (SpecError, OSError, UnicodeError, RecursionError) as error:
         print(f"Error: {_terminal_safe(str(error))}", file=sys.stderr)
         return 2
-    if args.as_json:
-        print(json.dumps(result, ensure_ascii=False, indent=2))
-    else:
-        print(result["url"])
     return 0
 
 
