@@ -863,7 +863,8 @@ main {
   line-height: 1;
 }
 
-.location-presets {
+.location-presets,
+.language-presets {
   margin-bottom: 12px;
 }
 

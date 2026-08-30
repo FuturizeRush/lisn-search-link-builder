@@ -434,6 +434,8 @@
     setTextIfChanged(byId("language-selection-count"), values.length ? `${values.length} selected` : "Any language");
     setTextIfChanged(byId("language-picker-summary"), summaryLabel(values, "Any language"));
     renderSelectedSummary("language-selected", values, "Any language");
+    byId("select-any-language").setAttribute("aria-pressed", String(values.length === 0));
+    byId("select-english-language").setAttribute("aria-pressed", String(sameValues(values, ["English"])));
   }
 
   function filterOptions(inputId, containerId, emptyId, statusId, extraSelected = 0) {
@@ -555,6 +557,12 @@
     updatePreview();
   }
 
+  function selectLanguagePreset(values) {
+    setSelected("language", values);
+    updateAllSummaries();
+    updatePreview();
+  }
+
   function clearFilters({ update = true } = {}) {
     form.querySelectorAll('input[type="checkbox"]').forEach(input => { input.checked = false; });
     ["title-include", "title-exclude", "people-keywords", "industry-search", "region-search", "custom-industry-name", "custom-industry-id"].forEach(id => {
@@ -653,6 +661,8 @@
     byId("select-us").addEventListener("click", () => selectRegionPreset(["US"]));
     byId("select-us-states").addEventListener("click", () => selectRegionPreset(catalogs.usStateCodes));
     byId("select-all-us-areas").addEventListener("click", () => selectRegionPreset(catalogs.usDetailedRegionCodes));
+    byId("select-any-language").addEventListener("click", () => selectLanguagePreset([]));
+    byId("select-english-language").addEventListener("click", () => selectLanguagePreset(["English"]));
     byId("select-owner-titles").addEventListener("click", () => applyTitlePreset(STRICT_OWNER_TITLES));
     byId("select-all-titles").addEventListener("click", () => applyTitlePreset(catalogs.currentJobTitles));
     byId("clear-titles").addEventListener("click", clearTitles);

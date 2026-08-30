@@ -10,7 +10,7 @@
   <title>Lead Search Builder</title>
   <meta name="description" content="Build and name a LinkedIn Sales Navigator people search link in your browser.">
   <link rel="canonical" href="https://futurizerush.github.io/lisn-search-link-builder/">
-  <link rel="stylesheet" href="src/styles.css?v=20">
+  <link rel="stylesheet" href="src/styles.css?v=21">
 </head>
 <body>
   <nav class="skip-links" aria-label="Skip links">
@@ -242,6 +242,10 @@
             <span id="language-selection-count" class="section-count">Any language</span>
           </div>
           <div id="language-selected" class="selected-summary" aria-live="polite"></div>
+          <div class="preset-actions language-presets" role="group" aria-labelledby="language-heading">
+            <button id="select-any-language" class="preset-button" type="button" aria-pressed="true">Any language</button>
+            <button id="select-english-language" class="preset-button" type="button" aria-pressed="false">English</button>
+          </div>
           <details class="option-picker" id="language-picker">
             <summary><span>Choose languages</span><span id="language-picker-summary">Any language</span></summary>
             <div class="picker-body">
@@ -390,6 +394,6 @@
   <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
   <script src="src/lisn-core.js?v=6"></script>
   <script src="src/order-name.js?v=5"></script>
-  <script src="src/app.js?v=11"></script>
+  <script src="src/app.js?v=12"></script>
 </body>
 </html>
